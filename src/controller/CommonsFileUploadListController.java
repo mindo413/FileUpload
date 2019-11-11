@@ -29,7 +29,8 @@ public class CommonsFileUploadListController extends HttpServlet {
 		
 		System.out.println(uploadfile);
 		
-		req.getRequestDispatcher("/WEB-INF/views/commons/filelist.jsp").forward(req, resp);
+//		req.getRequestDispatcher("/WEB-INF/views/commons/filelist.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/file/list.jsp").forward(req, resp);
 		
-	}
+	} 
 }

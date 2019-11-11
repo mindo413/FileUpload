@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import dao.face.FileDao;
 import dbutil.DBConn;
 import dto.UploadFile;
@@ -83,6 +82,45 @@ public class FileDaoImpl implements FileDao {
 		}
 
 		return list;
+	}
+
+	@Override
+	public void selectByFileno(UploadFile downFile) {
+		// DB연결 객체
+		conn = DBConn.getConnection();
+
+		// 수행할 SQL 쿼리
+		String sql = "";
+		sql += "SELECT";
+		sql += " fileno, originname, storedname";
+		sql += " FROM uploadfile";
+		sql += " WHERE fileno = ?";
+
+		try {
+			ps = conn.prepareStatement(sql); // SQL 쿼리 수행 객체
+			ps.setInt(1, downFile.getFileno()); // ? 채우기
+
+			rs = ps.executeQuery(); // SQL 쿼리 수행 및 ResultSet 반환
+
+			// SQL 수행 결과 처리
+			while (rs.next()) {
+				downFile.setOriginname(rs.getString("originname"));
+				downFile.setStoredname(rs.getString("storedname"));
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 자원 해젠
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

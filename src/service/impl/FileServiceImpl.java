@@ -240,5 +240,53 @@ public class FileServiceImpl implements FileService {
 		
 		return fileDao.filelist();
 	}
+	
+	/**
+	 * 요청객체로부터 요청파라미터 fileno를 얻는다
+	 * 
+	 * @param req - 요청정보 객체
+	 * @return UploadFile - 전달파라미터 fileno를 저장한 DTO
+	 */
+	
+	@Override
+	public UploadFile getFileno(HttpServletRequest req) {
+		
+		// 전달 파라미터 받기
+		String param = req.getParameter("fileno");
+		
+		// int형으로 형 변환
+		int fileno = 0;
+		if(param != null && !"".equals(param)) {
+			fileno = Integer.parseInt(param);
+		}
+		
+		// DTO에 저장
+		UploadFile uploadFile = new UploadFile();
+		uploadFile.setFileno(fileno);
+		
+		// 반환
+		return uploadFile;
+	}
+
+	@Override
+	public void getFile(UploadFile downFile) {
+		fileDao.selectByFileno(downFile);
+		
+	}
+
+	@Override
+	public UploadFile getFile(HttpServletRequest req) {
+		// 요청파라미터 fileno 얻기
+		UploadFile downFile = getFileno(req);
+		
+		// 파일정보 얻기
+		getFile(downFile);
+		
+		// 반환
+		return downFile;
+	}
+	
+	
+	
 
 }
